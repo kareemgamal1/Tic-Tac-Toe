@@ -1,0 +1,105 @@
+body {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  background-image: url(https://cdn.wallpapersafari.com/3/89/53j19Z.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.input-container::before {
+  content: " ";
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 4%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+}
+.input::before {
+  content: " ";
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+.input label {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  border: 1px solid black;
+}
+.game-cell {
+  border: 1px solid rgba(128, 128, 128, 0.587);
+  min-width: 100%;
+  min-height: 100%;
+  background-color: rgb(255, 255, 255);
+}
+.game-board > div:hover {
+  background-color: rgba(141, 149, 149, 0.681);
+}
+
+.game-board > div > img {
+  max-width: 100%;
+  padding: 25%;
+  object-fit: cover;
+  overflow: hidden;
+}
+.main-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  justify-content: center;
+  width: 100%;
+  font-size: 1em;
+  background-color: rgba(0, 0, 0, 0.217);
+}
+.footer p {
+  width: fit-content;
+}
+.fa-github {
+  padding: 3px;
+  color: white;
+  transition: transform 0.3s ease-in-out;
+}
+.fa-github:hover {
+  transform: rotate(360deg) scale(1.2);
+}

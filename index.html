@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <title>Tic Tac Toe</title>
+  </head>
+
+  <body>
+
+    <h3 class="text-center">Tic Tac Toe</h3>
+    <div class="input-container">
+      <form class="input d-flex" action="javascript:void(0);">
+        <label for="first-player">First player</label>
+        <input required type="text" class="first-player" id="first-player">
+        <label for="second-player">Second player</label>
+        <input required type="text" class="second-player" id="second-player">
+        <button type="submit" class="mt-2 start btn-dark w-50 text-center p-1">Start</button>
+      </form>
+    </div>
+    <div class="main-game ">
+      <div class="w-25 game-board">
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="1" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="2" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="3" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="4" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="5" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="6" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="7" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="8" alt=""></div>
+        <div class="game-cell"><img src="assets/initial.png" class="sign" id="9" alt=""></div>
+      </div>
+      <div class="result ">
+        <div class="prompt"></div>
+        <button class="rst btn-dark">Reset</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>
+        Copyright ©
+        <script>
+          document.write(new Date().getFullYear())
+        </script>
+        kareemgamaal
+        <a href="https://github.com/kareemgamal1" target="_blank"><i class="fab fa-github"></i></a>
+      </p>
+    </footer>
+    <script src=" script.js"></script>
+  </body>
+
+</html>
