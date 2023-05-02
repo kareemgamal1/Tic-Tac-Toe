@@ -1,3 +1,4 @@
+// Player Factory Function
 const Player = (name, choice) => {
   const getChoice = () => choice;
   const getName = () => name;
@@ -8,18 +9,19 @@ const Player = (name, choice) => {
   };
 };
 
+// GameBoard Module
 const GameBoard = (() => {
   let firstName, secondName, firstChoice, secondChoice, playerOne, playerTwo;
+  let gameBoard = ["", "", "", "", "", "", "", "", ""];
 
+  // Private function to validate the form
   const _validateForm = () => {
-    let firstInput = document.querySelector(".first-player").checkValidity();
-    let secondInput = document.querySelector(".second-player").checkValidity();
-    if (!firstInput || !secondInput) {
-      return false;
-    }
-    return true;
+    const firstInput = document.querySelector(".first-player").checkValidity();
+    const secondInput = document.querySelector(".second-player").checkValidity();
+    return firstInput && secondInput;
   };
 
+  // Private function to input names
   const _inputNames = () => {
     if (_validateForm()) {
       firstName = document.querySelector(".first-player").value;
@@ -28,12 +30,14 @@ const GameBoard = (() => {
     }
   };
 
+  // Private function to generate choices
   const _generateChoices = () => {
-    let choices = ["x", "o"];
+    const choices = ["x", "o"];
     firstChoice = choices[Math.floor(Math.random() * 2)];
-    firstChoice == "x" ? (secondChoice = "o") : (secondChoice = "x");
+    firstChoice === "x" ? (secondChoice = "o") : (secondChoice = "x");
   };
 
+  // Public function to create players
   const createPlayers = () => {
     _inputNames();
     _generateChoices();
@@ -41,10 +45,12 @@ const GameBoard = (() => {
     playerTwo = Player(secondName, secondChoice);
   };
 
+  // Public function to get player one
   const getPlayerOne = () => {
     return playerOne;
   };
 
+  // Public function to get player two
   const getPlayerTwo = () => {
     return playerTwo;
   };
@@ -53,54 +59,59 @@ const GameBoard = (() => {
     createPlayers,
     getPlayerOne,
     getPlayerTwo,
+    gameBoard,
   };
 })();
 
+// Display Controller Module
 const displayController = ((p1, p2) => {
-  let gameBoard = ["", "", "", "", "", "", "", "", ""];
   let round = 1;
-  let start = document.querySelector(".start");
   let prompt = document.querySelector(".prompt");
-  let playerOne;
-  let playerTwo;
 
+  // Event listener to start the game
+  const start = document.querySelector(".start");
   start.addEventListener("click", () => {
     GameBoard.createPlayers();
-    playerOne = GameBoard.getPlayerOne();
-    playerTwo = GameBoard.getPlayerTwo();
-    captureClicks();
+    const playerOne = GameBoard.getPlayerOne();
+    const playerTwo = GameBoard.getPlayerTwo();
+    captureClicks(playerOne, playerTwo);
   });
 
+  // Private function to mark a cell
   const _markCell = (currentImg, choice) => {
-    //when prompt is empty it means that the game hasn't ended
-    if (prompt.childNodes.length == 0) {
-      let ID = currentImg.id;
-      gameBoard[ID - 1] = choice;
+    // When prompt is empty, the game hasn't ended
+    if (prompt.childNodes.length === 0) {
+      const ID = currentImg.id;
+      GameBoard.gameBoard[ID - 1] = choice;
       currentImg.src = `assets/${choice}.png`;
     }
     checkDraw();
     checkResult();
   };
 
+  // Private function to check the game result
   const checkResult = () => {
-    let winner = checkWinner();
-    if (winner != undefined) {
+    const winner = checkWinner();
+    if (winner !== undefined) {
       prompt.textContent = `${winner.getName()} has won (${winner.getChoice()})`;
     }
   };
-  const captureClicks = () => {
-    let allCells = document.querySelectorAll(".game-cell");
+
+  // Private function to capture cell clicks
+  const captureClicks = (playerOne, playerTwo) => {
+    const allCells = document.querySelectorAll(".game-cell");
     allCells.forEach((item) => {
       item.addEventListener("click", () => {
-        let currentImg = item.querySelector(".sign");
-        _playerTurn(currentImg);
+        const currentImg = item.querySelector(".sign");
+        _playerTurn(currentImg, playerOne, playerTwo);
       });
     });
   };
 
-  const _playerTurn = (currentImg) => {
-    if (currentImg.getAttribute("src") == "assets/initial.png") {
-      if (round % 2 != 0) {
+  // Private function to handle player turns
+  const _playerTurn = (currentImg, playerOne, playerTwo) => {
+    if (currentImg.getAttribute("src") === "assets/initial.png") {
+      if (round % 2 !== 0) {
         _markCell(currentImg, playerOne.getChoice());
       } else {
         _markCell(currentImg, playerTwo.getChoice());
@@ -109,23 +120,24 @@ const displayController = ((p1, p2) => {
     }
   };
 
+  // Private function to reset the game
   const reset = (() => {
-    let rst = document.querySelector(".rst");
+    const rst = document.querySelector(".rst");
     rst.addEventListener("click", () => {
       round = 1;
-      gameBoard = gameBoard.fill("");
-      let allCells = document.querySelectorAll(".game-cell");
+      GameBoard.gameBoard = GameBoard.gameBoard.fill("");
+      const allCells = document.querySelectorAll(".game-cell");
       allCells.forEach((item) => {
-        let currentImg = item.querySelector(".sign");
+        const currentImg = item.querySelector(".sign");
         currentImg.src = "assets/initial.png";
       });
-      let prompt = document.querySelector(".prompt");
       prompt.textContent = "";
     });
   })();
 
+  // Private function to check the winner
   const checkWinner = () => {
-    let possibleCombinations = [
+    const possibleCombinations = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -136,26 +148,28 @@ const displayController = ((p1, p2) => {
       [2, 4, 6],
     ];
     for (const combination of possibleCombinations) {
-      //for each combination check if the current sum of it's characters resembles a win
+      // For each combination, check if the current sum of its characters resembles a win
       let currentCombination = "";
       combination.forEach((tableIndex) => {
-        currentCombination += gameBoard[tableIndex];
+        currentCombination += GameBoard.gameBoard[tableIndex];
       });
       if (currentCombination === "ooo" || currentCombination === "xxx") {
-        return getWinner(gameBoard[[combination[0]]]);
+        return getWinner(GameBoard.gameBoard[[combination[0]]]);
       }
     }
   };
 
+  // Private function to get the winner
   const getWinner = (cell) => {
-    if (cell == playerOne.getChoice()) {
-      return playerOne;
-    } else if ((cell = playerTwo.getChoice())) {
-      return playerTwo;
+    if (cell === p1.getChoice()) {
+      return p1;
+    } else if (cell === p2.getChoice()) {
+      return p2;
     }
   };
 
+  // Private function to check for a draw
   const checkDraw = () => {
-    if (round == 9) prompt.textContent = "Draw!";
+    if (round === 9) prompt.textContent = "Draw!";
   };
 })(GameBoard.getPlayerOne(), GameBoard.getPlayerTwo());
